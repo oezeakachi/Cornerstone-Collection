@@ -1,0 +1,104 @@
+---
+# tasks file for cornerstone:discover-ip-aws.yml
+
+#
+# -----------------------------------------------------------------------------
+# Discover Virtual Machine IP Address
+# -----------------------------------------------------------------------------
+#
+# AWS: In AWS the ec2_instance_facts module provides all DNS & IP address info,
+# both public and private.
+# If targeting the Public Address (the default) the DNS and IP address are available
+# at vm_data.instances[0]public_dns_name and vm_data.instances[0]public_ip_address
+#
+# Similarly if targeting a Private DNS/IP, these are available at
+# vm_data.instances[0]private_dns_name and vm_data.instances[0]private_ip_address
+#
+
+# Discover Public IP Address of VM
+- name: "[Cornerstone - AWS VM] Discover Public DNS/IP Address"
+  amazon.aws.ec2_instance_info:
+    region: "{{ cornerstone_location }}"
+    profile: "{{ cornerstone_aws_profile }}"
+    filters:
+      "tag:Name": "{{ cornerstone_vm_name }}"
+      instance-state-name: [ "running", "shutting-down", "stopping", "stopped" ]
+  register: vm_data
+  tags: ["{{ cornerstone_platform }}"]
+
+# Set Public DNS/IP Address as Fact
+- name: "[Cornerstone - AWS VM] Set Public DNS/IP Address"
+  set_fact:
+      cornerstone_vm_ipaddress: "{{ vm_data.instances[0].public_dns_name }}"
+  when:
+    - vm_data.instances
+    - cornerstone_public_private_ip == "public"
+  tags: ["{{ cornerstone_platform }}"]
+
+# Set Private DNS/IP Address as a Fact
+- name: "[Cornerstone - AWS VM] Set Private DNS/IP Address"
+  set_fact:
+      cornerstone_vm_ipaddress: "{{ vm_data.instances[0].private_dns_name }}"
+  when:
+    - vm_data.instances
+    - cornerstone_public_private_ip == "private"
+  tags: ["{{ cornerstone_platform }}"]
+
+- name: "[Cornerstone - VM] Display DNS/IP Address"
+  debug:
+    msg: "Cornerstone VM {{ cornerstone_public_private_ip }} IP Address: {{ cornerstone_vm_ipaddress }}"
+  when:
+    - vm_data.instances
+
+# Revisit
+#- set_fact:
+#    from_template: "{{ lookup('template', '../templates/vm_vars_template.j2') }}"
+#  vars:
+#    to_cornerstone_template_aws_vmvars: "{{ cornerstone_vm_vars }}"
+
+#- name: "[Cornerstone - AWS] Create Security Group"
+#  ec2_group:
+#    name: "{{ item.name }}"
+#    description: "{{ item.description }}"
+#    vpc_id: "{{ vpc.vpc.id }}"
+#    region: "{{ item.region }}"
+#    profile: "{{ cornerstone_aws_profile }}"
+#    state: present
+#    rules: "{{ item.rules }}"
+#    tags:
+#      Project: "{{ cornerstone_prefix }}"
+#  with_items: "{{ from_template.cornerstone_vmvar }}"
+
+
+- name: "[Cornerstone - VM] Register IP with Temporary Host Group"
+  add_host:
+    hostname: "{{ cornerstone_vm_ipaddress }}"
+    groupname: "{{ cornerstone_prefix }}"
+    ansible_ssh_user: "{{ cornerstone_ssh_user }}"
+    ansible_ssh_private_key_file: "{{ cornerstone_ssh_key_path }}"
+    ansible_ssh_extra_args: "{{ cornerstone_ssh_extra_args }}"
+  when:
+    - vm_data.instances
+
+- name: "[Cornerstone - VM] Register IP with Temporary Host Group named after the Purpose tag"
+  add_host:
+    hostname: "{{ cornerstone_vm_ipaddress }}"
+    groupname: "{{ cornerstone_tag_purpose }}"
+    ansible_ssh_user: "{{ cornerstone_ssh_user }}"
+    ansible_ssh_private_key_file: "{{ cornerstone_ssh_key_path }}"
+    ansible_ssh_extra_args: "{{ cornerstone_ssh_extra_args }}"
+  when:   
+    - vm_data.instances
+    - cornerstone_tag_purpose != ""
+
+- name: "[Cornerstone - VM] Register IP with Temporary Host Group named after the Role tag"
+  add_host:
+    hostname: "{{ cornerstone_vm_ipaddress }}"
+    groupname: "{{ cornerstone_tag_role }}"
+    ansible_ssh_user: "{{ cornerstone_ssh_user }}" 
+    ansible_ssh_private_key_file: "{{ cornerstone_ssh_key_path }}"
+    ansible_ssh_extra_args: "{{ cornerstone_ssh_extra_args }}"
+  when:
+    - vm_data.instances
+    - cornerstone_tag_role != ""
+

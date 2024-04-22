@@ -1,0 +1,172 @@
+---
+# tasks file for cornerstone:vm-aws.yml
+
+#
+# -----------------------------------------------------------------------------
+# Virtual Machine Tasks
+# -----------------------------------------------------------------------------
+#
+# AWS utilises AZs that are simply mapped to subnets within a VPC.
+# When creating a VM with Ansible, you need to choose a subnet
+# to deploy the VM into. The AWS UX has a "I don't care which AZ I deploy to"
+# option, which the ec2 module does not have.
+# The upshot here, is that if you parameterise the subnet, you cannot ensure
+# idempotency of ec2_instance when you invoke it. To fix that, I first check
+# if an existing VM exists, and if so grabs the subnet in use and uses that.
+# If one doesn't exist, it simply allocates a random subnet/az.
+#
+
+# Check if we have an existing VM with this name.
+- name: "[Cornerstone - AWS] Check for Existing VM"
+  amazon.aws.ec2_instance_info:
+    region: "{{ cornerstone_location }}"
+    profile: "{{ cornerstone_aws_profile}}"
+    filters:
+      "tag:Name": "{{ cornerstone_vm_name }}"
+      "tag:Project": "{{ cornerstone_prefix }}"
+      instance-state-name: [ "running", "shutting-down", "stopping", "stopped" ]
+  register: vm_data
+
+# Set the existing subnet
+- name: "[Cornerstone - AWS] Set Instance_ID of Existing VM"
+  set_fact:
+    subnet_id: "{{ vm_data.instances[0].subnet_id }}"
+    instance_id: "{{ vm_data.instances[0].instance_id }}"
+  when: 
+    - vm_data.instances
+
+- name: "[Cornerstone - AWS] Set instance_id to -99 if no instance, required for removal of instances"
+  set_fact:
+    instance_id: "-99"
+  when: not vm_data.instances
+
+- name: "[Cornerstone - AWS] Show Existing Subnet ID"
+  debug:
+    msg: "{{ subnet_id }}"
+  when: subnet_id is defined
+
+# Pick a Subnet/AZ
+- name: "[Cornerstone - AWS] Retrieve Available Subnets/AZs to place VM"
+  amazon.aws.ec2_vpc_subnet_info:
+    region: "{{ cornerstone_location }}"
+    profile: "{{ cornerstone_aws_profile}}"
+    filters:
+      vpc-id: "{{ vpc.vpc.id }}"
+      "tag:name": "{{ cornerstone_prefix }}-{{ cornerstone_vm_aws_az }}"
+  register: vpc_subnets
+  when: not vm_data.instances 
+
+- name: "[Cornerstone - AWS] Show Available Subnet IDs"
+  debug:
+    msg: "{{ vpc_subnets.subnets | map(attribute='id') | list }}"
+  when: not vm_data.instances 
+
+# Used to Pick a random subnet/az to place the VM but now there is only one subnet given, so nothing random about one.
+- name: "[Cornerstone - AWS] Set Random Subnet ID"
+  set_fact:
+    subnet_id: "{{ vpc_subnets.subnets | map(attribute='id') | list | random }}"
+  when: not vm_data.instances 
+
+# Create the VM (baseline no data disks)
+- set_fact:
+    from_template: "{{ lookup('template', '../templates/aws_tags_template.j2') }}"
+  vars:
+    to_cornerstone_template_aws_sg: "{{ cornerstone_sg }}"
+#    to_cornerstone_template_aws_sg: "{{ cornerstone_sg }}"
+
+- name: "[Cornerstone - AWS] Create/Delete VM - {{ cornerstone_vm_name }}"
+  ec2_instance:
+    name: "{{ cornerstone_vm_name }}"
+    state: "{{ cornerstone_vm_state }}"
+    instance_ids: "{{ instance_id | default(-99) }}"
+    region: "{{ cornerstone_location }}"
+    key_name: "{{ cornerstone_aws_ssh_key_name }}"
+    security_group: "{{ cornerstone_vm_aws_sg }}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    instance_type: "{{ cornerstone_vm_flavour }}"
+    image_id: "{{ cornerstone_vm_aws_ami }}"
+    volumes:
+      - device_name: /dev/sda1
+        ebs:
+          volume_size: "{{ cornerstone_vm_os_disk_size | int }}"
+    network:
+      assign_public_ip: "{{ cornerstone_vm_assign_public_ip }}" 
+      private_ip_address: "{{ cornerstone_vm_private_ip }}"
+    profile: "{{ cornerstone_aws_profile }}"
+    tags:
+      Project: "{{ cornerstone_prefix }}"
+      Purpose: "{{ cornerstone_tag_purpose }}"
+      Role: "{{ cornerstone_tag_role }}"
+      kubernetes.io/cluster/openshift: "clusterid"
+  when: not cornerstone_vm_data_disk
+  register: output_vm
+
+# Check VM is Alive
+# The ec2_instance module has a wait functions built in, so no need.
+#- name: "[Cornerstone - AWS] Check VM is Alive"
+#  async_status:
+#    jid: "{{ output_vm.ansible_job_id }}"
+#  when: not cornerstone_vm_data_disk
+#  register: vm_result
+#  until: vm_result.finished
+#  retries: 30
+#  delay: 10
+
+# Create the VM (baseline with data disk)
+- name: "[Cornerstone - AWS] Create/Delete VM - {{ cornerstone_vm_name }} + Data Disk"
+  ec2_instance:
+    name: "{{ cornerstone_vm_name }}"
+    state: "{{ cornerstone_vm_state }}"
+    instance_ids: "{{ instance_id | default(-99) }}"
+    region: "{{ cornerstone_location }}"
+    key_name: "{{ cornerstone_aws_ssh_key_name }}"
+    security_group: "{{ cornerstone_vm_aws_sg }}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    instance_type: "{{ cornerstone_vm_flavour }}"
+    image_id: "{{ cornerstone_vm_aws_ami }}"
+    network:
+      assign_public_ip: "{{ cornerstone_vm_assign_public_ip }}" 
+      private_ip_address: "{{ cornerstone_vm_private_ip }}"
+    profile: "{{ cornerstone_aws_profile }}"
+    volumes:
+      - device_name: /dev/sda1
+        ebs:
+          volume_size: "{{ cornerstone_vm_os_disk_size | int }}"
+      - device_name: "{{ cornerstone_vm_data_disk_device_name }}"
+        ebs:
+          volume_size: "{{ cornerstone_vm_data_disk_size | int }}" 
+          delete_on_termination: true
+    tags:
+      Project: "{{ cornerstone_prefix }}"
+      Purpose: "{{ cornerstone_tag_purpose }}"
+      Role: "{{ cornerstone_tag_role }}"
+      kubernetes.io/cluster/openshift: "clusterid"
+  when: cornerstone_vm_data_disk
+  register: output_vm
+
+# At some point we need to workout how to add custom tags. For openshift deployments we need this.
+#kubernetes.io/cluster/openshift: "clusterid"
+
+# Associate Elastic IP with instance, if EIP has been precreated. 
+- name: "associate new elastic IPs with each of the instances"
+  block:
+    - name: "[Cornerstone - AWS] Check for Existing VM"
+      amazon.aws.ec2_instance_info:
+        region: "{{ cornerstone_location }}"
+        profile: "{{ cornerstone_aws_profile}}"
+        filters:
+          "tag:Name": "{{ cornerstone_vm_name }}"
+          "tag:Project": "{{ cornerstone_prefix }}"
+          instance-state-name: [ "running", "shutting-down", "stopping", "stopped" ]
+      register: createdvm_data
+   
+    - name: "Assign elastic ip"
+      amazon.aws.ec2_eip:
+        region: "{{ cornerstone_location }}"
+        public_ip: "{{ cornerstone_vm_public_ip }}"
+        device_id: "{{ createdvm_data.instances[0].instance_id }}"
+        state: present
+  when:
+    - cornerstone_vm_public_ip is defined 
+    - cornerstone_vm_public_ip != ""
+    - cornerstone_vm_state == "present"

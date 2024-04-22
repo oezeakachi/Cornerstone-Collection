@@ -1,0 +1,11 @@
+---
+# vars file for pre-req-install
+aws_system_user: open-environment-ndrch-admin
+aws_profile: default
+aws_access_key: ""
+aws_secret_key: ""
+aws_region: eu-west-2
+aws_format: table 
+ssh_key_name: "id_ssh_rsa"
+ec2_ssh_key: "obi.pem"
+ssh_role_dir: "/home/oezeakac/.ssh"

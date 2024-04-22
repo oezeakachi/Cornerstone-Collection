@@ -1,0 +1,9 @@
+---
+- name: Build Instance  
+  hosts: localhost
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - include_role:
+        name: /home/oezeakac/labs/Ansible/cornerstone-collection/cornerstone/roles/pre-req-install

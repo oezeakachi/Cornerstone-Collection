@@ -269,7 +269,7 @@ Example Playbook
       roles:
          - role: danhawker.cornerstone
 
-## Playbook example 2
+## Playbook Example 2
 ---------------------
 
 ```yaml
@@ -285,9 +285,8 @@ Example Playbook
         name: roles/ansible-role-cornerstone
 ```
 
-## vars file example in the var folder for 2nd Playbook example
 
-## AWS var file example
+## AWS vars file example
 
 ```yaml
 ---
@@ -381,11 +380,9 @@ guests:
       cornerstone_aws_vm_data_disk_managed: "gp2"
       cornerstone_vm_data_disk_size: "50" 
 
-
-```
 ## duplicate the testsystem config if you want to create more instances i.e testsystem3 and its settings and so forth 
+```
 
-## For aws please configure the aws cli with the access key and secret access key creds
 
 
 ## Libvrt vars file example 
@@ -431,13 +428,14 @@ guests:
 ```
 
 ## Azure vars file example 
+ 
 ## For Azure you cannot use the guest layout yet. The task will only create one instance at a time.
 
 ```yaml
 cornerstone_prefix: cs
 cornerstone_platform: azure
 cornerstone_ssh_user: azureuser
-cornerstone_ssh_key_path: /home/ken/.ssh/id_rsa
+cornerstone_ssh_key_path: <file_path>
 
 cornerstone_ssh_admin_username: azureadmin
 cornerstone_ssh_admin_pubkey: ssh-rsa .... [redacted]
@@ -479,12 +477,12 @@ guests:
 ```yaml
 cornerstone_prefix: cs
 cornerstone_platform: gcp
-cornerstone_ssh_user: obi
-cornerstone_ssh_key_path: /home/oezeakac/.ssh/id_rsa ## private key
+cornerstone_ssh_user: <user>
+cornerstone_ssh_key_path: <file_path> ## private key
 
-cornerstone_gcp_project: "openenv-874m7"
+cornerstone_gcp_project: <insert_openenv_id>
 cornerstone_gcp_auth_kind: "serviceaccount"
-cornerstone_service_account_file: "/home/oezeakac/creds/openenv-874m7-8f264f3d4dee.json" ## Download service account creds as json
+cornerstone_service_account_file: "" ## Download service account creds as json
 
 cornerstone_virtual_network_name: "{{ cornerstone_prefix }}-vnet"
 cornerstone_location: europe-west2
@@ -492,8 +490,8 @@ cornerstone_gcp_zone: europe-west2-a
 cornerstone_virtual_network_cidr: 172.16.0.0/28
 cornerstone_gcp_use_serviceaccount: true
 
-cornerstone_ssh_admin_username: obi
-cornerstone_ssh_admin_pubkey: <generate normal ssh key and sub in here>
+cornerstone_ssh_admin_username: <user>
+cornerstone_ssh_admin_pubkey: <generate pub ssh key and sub in here>
 
 ocp4_platform: gcp
 
@@ -509,9 +507,9 @@ vm_state: present
 guests:
   bastion:
     cornerstone_platform: gcp
-    cornerstone_gcp_project: "openenv-874m7"
+    cornerstone_gcp_project: "insert_openenv_id"
     cornerstone_gcp_auth_kind: "serviceaccount"
-    cornerstone_service_account_file: "/home/oezeakac/creds/openenv-874m7-8f264f3d4dee.json"
+    cornerstone_service_account_file: ""
     cornerstone_working_dir: '/tmp/'
     cornerstone_vm_state: "{{vm_state}}"
     cornerstone_vm_name: "bastion"
@@ -521,7 +519,7 @@ guests:
     cornerstone_virtual_network_cidr: 172.16.0.0/28
     cornerstone_subnet_name: "{{ cornerstone_prefix }}subnet"
     cornerstone_vm_flavour: e2-medium
-    cornerstone_vm_gcp_source_image: "projects/rhel-cloud/global/images/rhel-8-v20230411"
+    cornerstone_vm_gcp_source_image: "filepath"
     cornerstone_vm_os_disk_size: 30
     cornerstone_tag_purpose: "bastion"
     cornerstone_tag_role: "testing"

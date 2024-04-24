@@ -1,7 +1,7 @@
 Pre-Req-Install
 =========
 
-Installs required software dependables that the cornestone role
+Installs required software dependables that power the cornestone role
 
 Requirements
 ------------
@@ -23,7 +23,6 @@ aws_format: table
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------

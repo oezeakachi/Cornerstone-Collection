@@ -428,8 +428,8 @@ guests:
 ```
 
 ## Azure vars file example 
- 
-## For Azure you cannot use the guest layout yet. The task will only create one instance at a time.
+
+For Azure you cannot use the guest layout yet. The task will only create one instance at a time.
 
 ```yaml
 cornerstone_prefix: cs

@@ -1,0 +1,43 @@
+---
+# Azure Packages Installation
+
+- name: Generate SSH key pair
+  openssh_keypair:
+    path: "{{ ssh_role_dir }}/{{ ssh_key_name }}"
+    force: true  # rewrites SSH key if already present
+
+- name: Install azure network
+  ansible.builtin.pip:
+    name: azure-mgmt-network
+
+- name: Install azure management automation
+  ansible.builtin.pip:
+    name: azure.mgmt.automation
+
+- name: Install azure management notification hubs
+  ansible.builtin.pip:
+    name: azure.mgmt.notificationhubs
+
+- name: Install azure management data factory
+  ansible.builtin.pip:
+    name: azure.mgmt.datafactory
+
+- name: Install python msgraph
+  ansible.builtin.pip:
+    name: python-msgraph
+
+- name: Install MS Graph SDK
+  ansible.builtin.pip:
+    name: msgraph-sdk
+
+- name: Install Azure CLI
+  ansible.builtin.pip:
+    name: azure-cli
+
+- name: Install Azure collections
+  ansible.builtin.shell: |
+    ansible-galaxy collection install azure.azcollection --force 
+    pip3 install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
+  args:
+    chdir: /home/oezeakac
+    executable: /bin/bash

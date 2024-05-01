@@ -7,4 +7,6 @@ aws_secret_key: ""
 aws_region: ""
 aws_format: table 
 ssh_key_name: "" # Define ssh key name
-ssh_role_dir: "" # Define directory to store ssh key
+ssh_role_dir: "/home/oezeakac/.ssh" # Define directory to store ssh key
+foundation: "aws"
+ec2_key_name: "obi.pem"

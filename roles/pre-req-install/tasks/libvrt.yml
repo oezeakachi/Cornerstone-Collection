@@ -1,0 +1,52 @@
+---
+- name: Generate SSH key pair
+  openssh_keypair:
+    path: "{{ ssh_role_dir }}/{{ ssh_key_name }}"
+    force: true  # rewrites SSH key if already present
+    
+# Libvirt Package Installation
+
+- name: Install QEMU-KVM
+  ansible.builtin.dnf:
+    name: qemu-kvm
+    state: present
+
+- name: Install libvirt
+  ansible.builtin.dnf:
+    name: libvirt
+    state: present
+
+- name: Install virt-install
+  ansible.builtin.dnf:
+    name: virt-install
+    state: present
+
+- name: Install bridge-utils
+  ansible.builtin.dnf:
+    name: bridge-utils
+    state: present
+
+- name: Install virt-manager
+  ansible.builtin.dnf:
+    name: virt-manager
+    state: present
+
+- name: Install libvirt-devel
+  ansible.builtin.dnf:
+    name: libvirt-devel
+    state: present
+
+- name: Install virt-top
+  ansible.builtin.dnf:
+    name: virt-top
+    state: present
+
+- name: Install libguestfs-tools
+  ansible.builtin.dnf:
+    name: libguestfs-tools
+    state: present
+
+- name: Install guestfs-tools
+  ansible.builtin.dnf:
+    name: guestfs-tools
+    state: present

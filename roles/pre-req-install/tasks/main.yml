@@ -1,134 +1,17 @@
-# tasks file for pre-req-install - populate the file as needed
+---
 
-- name: Generate SSH key pair
-  openssh_keypair:
-    path: "{{ ssh_role_dir }}/{{ ssh_key_name }}"
-    force: true  # rewrites SSH key if already present
+- name: AWS Pre-Req Install
+  ansible.builtin.include_tasks: "aws.yaml"
+  when: foundation == 'aws'
 
-# AWS CLI Installation
+- name: Azure Pre-Req Install
+  ansible.builtin.include_tasks: "azure.yaml"
+  when: foundation == 'azure'
 
-- name: Install package dependencies
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - python
-    - unzip
-  become: true  # run as root
+- name: Libvrt Pre-Req Install
+  ansible.builtin.include_tasks: "libvrt.yaml"
+  when: foundation == 'libvrt'
 
-- name: Download the AWS CLI bundle
-  get_url:
-    url: https://s3.amazonaws.com/aws-cli/awscli-bundle.zip
-    dest: /tmp/awscli-bundle.zip
-  register: aws_cli_download_bundle
-
-- name: Unarchive the installer
-  unarchive:
-    src: /tmp/awscli-bundle.zip
-    dest: /tmp
-    copy: no
-    creates: /tmp/awscli-bundle
-  when: aws_cli_download_bundle.changed
-  register: aws_cli_unarchive_installer
-
-- name: Install AWS CLI package
-  shell: python /tmp/awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
-  args:
-    creates: /usr/bin/aws
-  when: aws_cli_unarchive_installer.changed
-
-- name: Configure AWS
-  shell: aws configure set {{ item.key }} {{ item.value }} --profile {{ aws_profile }}
-  # no_log: True
-  with_dict:
-    aws_access_key_id: "{{ aws_access_key }}"
-    aws_secret_access_key: "{{ aws_secret_key }}"
-    region: "{{ aws_region }}"
-    format: "{{ aws_format }}"
-  become_user: "{{ aws_system_user }}"
-  changed_when: false
-
-# Libvirt Package Installation
-
-- name: Install QEMU-KVM
-  ansible.builtin.dnf:
-    name: qemu-kvm
-    state: present
-
-- name: Install libvirt
-  ansible.builtin.dnf:
-    name: libvirt
-    state: present
-
-- name: Install virt-install
-  ansible.builtin.dnf:
-    name: virt-install
-    state: present
-
-- name: Install bridge-utils
-  ansible.builtin.dnf:
-    name: bridge-utils
-    state: present
-
-- name: Install virt-manager
-  ansible.builtin.dnf:
-    name: virt-manager
-    state: present
-
-- name: Install libvirt-devel
-  ansible.builtin.dnf:
-    name: libvirt-devel
-    state: present
-
-- name: Install virt-top
-  ansible.builtin.dnf:
-    name: virt-top
-    state: present
-
-- name: Install libguestfs-tools
-  ansible.builtin.dnf:
-    name: libguestfs-tools
-    state: present
-
-- name: Install guestfs-tools
-  ansible.builtin.dnf:
-    name: guestfs-tools
-    state: present
-
-# Azure Packages Installation
-
-- name: Install azure network
-  ansible.builtin.pip:
-    name: azure-mgmt-network
-
-- name: Install azure management automation
-  ansible.builtin.pip:
-    name: azure.mgmt.automation
-
-- name: Install azure management notification hubs
-  ansible.builtin.pip:
-    name: azure.mgmt.notificationhubs
-
-- name: Install azure management data factory
-  ansible.builtin.pip:
-    name: azure.mgmt.datafactory
-
-- name: Install python msgraph
-  ansible.builtin.pip:
-    name: python-msgraph
-
-- name: Install MS Graph SDK
-  ansible.builtin.pip:
-    name: msgraph-sdk
-
-- name: Install Azure CLI
-  ansible.builtin.pip:
-    name: azure-cli
-
-- name: Install Azure collections
-  ansible.builtin.shell: |
-    ansible-galaxy collection install azure.azcollection --force 
-    pip3 install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
-  args:
-    chdir: /home/oezeakac
-    executable: /bin/bash
+- name: GCP AWS Pre-Req Install
+  ansible.builtin.include_tasks: "gcp.yaml"
+  when: foundation == 'gcp'

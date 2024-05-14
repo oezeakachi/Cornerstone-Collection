@@ -290,21 +290,21 @@ Example Playbook
 
 ```yaml
 ---
-ansible_python_interpreter: /usr/bin/python3
+ansible_python_interpreter:         #Ex:/usr/bin/python3
 cornerstone_prefix: cs
-cornerstone_ssh_admin_username: rhadmin
-cornerstone_ssh_admin_pubkey:
-cornerstone_aws_ssh_key_name: ssh-test
-cornerstone_aws_profile: default
-cornerstone_ssh_user: ec2-user
-cornerstone_ssh_key_path: "ssh_key.pem"
+cornerstone_ssh_admin_username:     #Ex:rhadmin
+cornerstone_ssh_admin_pubkey:       #Ex:rsa.pub
+cornerstone_aws_ssh_key_name:       #Ex:ssh-test
+cornerstone_aws_profile:            #Ex:default
+cornerstone_ssh_user:               #Ex:ec2-user
+cornerstone_ssh_key_path:           #Ex:"ssh_key.pem"
 
-cornerstone_platform: aws
-cornerstone_location: eu-west-1
+cornerstone_platform:               #Ex:aws
+cornerstone_location:               #Ex:eu-west-1
 
 cornerstone_sg:
-  - name: "testworkshop-sg"
-    description: Security group for aws
+  - name:                           #Ex:"testworkshop-sg"
+    description:                    #Ex:Security group for aws
     region: "{{ cornerstone_location }}"
     rules:
       - proto: tcp
@@ -332,53 +332,53 @@ guests:
   testsystem1:
       cornerstone_vm_state: "{{vm_state}}"
       cornerstone_platform: aws
-      cornerstone_tag_purpose: "Testing"
-      cornerstone_tag_role: "testsystem"
-      cornerstone_vm_name: testsystem1
-      cornerstone_location: eu-west-1
-      cornerstone_vm_aws_az: eu-west-1a
-      cornerstone_vm_flavour: t3.2xlarge
-      cornerstone_vm_aws_ami: ami-0b04ce5d876a9ba29
-      cornerstone_vm_aws_sg: testworkshop-sg
+      cornerstone_tag_purpose:               #Ex:"Testing"
+      cornerstone_tag_role:                  #Ex:"testsystem"
+      cornerstone_vm_name:                   #Ex:testsystem
+      cornerstone_location:                  #Ex:eu-west-1
+      cornerstone_vm_aws_az:                 #Ex:eu-west-1a
+      cornerstone_vm_flavour:                #Ex:t3.2xlarge
+      cornerstone_vm_aws_ami:                #Ex:ami-0b04ce5d876a9ba29
+      cornerstone_vm_aws_sg:                 #EX:obitestworkshop-sg
       cornerstone_virtual_network_name: "{{ cornerstone_prefix }}vnet"
-      cornerstone_virtual_network_cidr: "10.1.0.0/16"
+      cornerstone_virtual_network_cidr:      #Ex:"10.1.0.0/16"
       cornerstone_subnet_name: "{{ cornerstone_prefix }}subnet"
-      cornerstone_public_private_ip: public
-      cornerstone_vm_private_ip:
-      cornerstone_vm_assign_public_ip: yes
-      cornerstone_vm_public_ip: <ip>
-      cornerstone_publicip_allocation_method: Dynamic
-      cornerstone_publicip_domain_name: null
-      cornerstone_vm_os_disk_size: 10
-      cornerstone_vm_data_disk: false
-      cornerstone_vm_data_disk_device_name: "/dev/xvdb"
-      cornerstone_aws_vm_data_disk_managed: "gp2"
-      cornerstone_vm_data_disk_size: "50" 
+      cornerstone_public_private_ip:          #Ex:public
+      cornerstone_vm_private_ip:              
+      cornerstone_vm_assign_public_ip:        #Ex:yes
+      cornerstone_vm_public_ip:               #Ex:<ip>
+      cornerstone_publicip_allocation_method: #Ex:Dynamic
+      cornerstone_publicip_domain_name:       #Ex:null
+      cornerstone_vm_os_disk_size:            #Ex:10
+      cornerstone_vm_data_disk:               #Ex:false
+      cornerstone_vm_data_disk_device_name:   #Ex:"/dev/xvdb"
+      cornerstone_aws_vm_data_disk_managed:   #Ex:"gp2"
+      cornerstone_vm_data_disk_size:          #Ex:"50"
   testsystem2:
       cornerstone_vm_state: "{{vm_state}}"
       cornerstone_platform: aws
-      cornerstone_tag_purpose: "Testing"
-      cornerstone_tag_role: "testsystem"
-      cornerstone_vm_name: testsystem2
-      cornerstone_location: eu-west-1
-      cornerstone_vm_aws_az: eu-west-1a
-      cornerstone_vm_flavour: t3.2xlarge
-      cornerstone_vm_aws_ami: ami-0b04ce5d876a9ba29
-      cornerstone_vm_aws_sg: obitestworkshop-sg
+      cornerstone_tag_purpose:               #Ex:"Testing"
+      cornerstone_tag_role:                  #Ex:"testsystem"
+      cornerstone_vm_name:                   #Ex:testsystem2
+      cornerstone_location:                  #Ex:eu-west-1
+      cornerstone_vm_aws_az:                 #Ex:eu-west-1a
+      cornerstone_vm_flavour:                #Ex:t3.2xlarge
+      cornerstone_vm_aws_ami:                #Ex:ami-0b04ce5d876a9ba29
+      cornerstone_vm_aws_sg:                 #EX:obitestworkshop-sg
       cornerstone_virtual_network_name: "{{ cornerstone_prefix }}vnet"
-      cornerstone_virtual_network_cidr: "10.1.0.0/16"
+      cornerstone_virtual_network_cidr:      #Ex:"10.1.0.0/16"
       cornerstone_subnet_name: "{{ cornerstone_prefix }}subnet"
-      cornerstone_public_private_ip: public
-      cornerstone_vm_private_ip:
-      cornerstone_vm_assign_public_ip: yes
-      cornerstone_vm_public_ip: <ip>
-      cornerstone_publicip_allocation_method: Dynamic
-      cornerstone_publicip_domain_name: null
-      cornerstone_vm_os_disk_size: 10
-      cornerstone_vm_data_disk: false
-      cornerstone_vm_data_disk_device_name: "/dev/xvdb"
-      cornerstone_aws_vm_data_disk_managed: "gp2"
-      cornerstone_vm_data_disk_size: "50" 
+      cornerstone_public_private_ip:          #Ex:public
+      cornerstone_vm_private_ip:              
+      cornerstone_vm_assign_public_ip:        #Ex:yes
+      cornerstone_vm_public_ip:               #Ex:<ip>
+      cornerstone_publicip_allocation_method: #Ex:Dynamic
+      cornerstone_publicip_domain_name:       #Ex:null
+      cornerstone_vm_os_disk_size:            #Ex:10
+      cornerstone_vm_data_disk:               #Ex:false
+      cornerstone_vm_data_disk_device_name:   #Ex:"/dev/xvdb"
+      cornerstone_aws_vm_data_disk_managed:   #Ex:"gp2"
+      cornerstone_vm_data_disk_size:          #Ex:"50" 
 
 ## duplicate the testsystem config if you want to create more instances i.e testsystem3 and its settings and so forth 
 ```
@@ -394,37 +394,37 @@ cornerstone_ssh_key_path: # Give a path to ssh key or it will just default to th
 cornerstone_platform: libvirt
 
 vm_state: present 
-vm_ip: 192.168.xxx.xxx
+vm_ip: #Ex:192.168.122.134
 
 guests:
   rhel8-basicvm01:
     cornerstone_platform: libvirt
-    cornerstone_vm_location: '<define_value>' # This where the qemu vm lives with the qemu image file so when creating in qemu gui make sure they live here
-    cornerstone_working_dir: '/tmp/'
-    cornerstone_vm_libvirt_template: '<define_value>' # Name of Qemu vm 
-    cornerstone_vm_libvirt_file_type: 'qcow2'
+    cornerstone_vm_location: '/home/oezeakac/VirtualMachines/' # This where the qemu vm lives with the qemu image file so when creating in qemu gui make sure they live here
+    cornerstone_working_dir:                   #Ex:'/tmp/'
+    cornerstone_vm_libvirt_template:           #Ex:'rhel9.3' 
+    cornerstone_vm_libvirt_file_type:          #Ex:'qcow2'
     cornerstone_vm_libvirt_vmtype:
-    cornerstone_vm_libvirt_vmos: 'linux'
-    cornerstone_vm_subnet: 24
-    cornerstone_vm_gateway: 192.168.xxx.xxx
-    cornerstone_vm_dns1: 192.168.xxx.xxx
-    cornerstone_vm_dns2: 8.8.8.8 
-    cornerstone_vm_name: 'rhel8-basicvm02'
+    cornerstone_vm_libvirt_vmos:               #Ex:'linux'
+    cornerstone_vm_subnet:                     #Ex:24
+    cornerstone_vm_gateway:                    #Ex:192.168.122.1
+    cornerstone_vm_dns1:                       #Ex:192.168.122.1
+    cornerstone_vm_dns2:                       #Ex:8.8.8.8 
+    cornerstone_vm_name:                       #Ex:'rhel8-basicvm02'
     cornerstone_vm_state: "{{vm_state}}" 
-    cornerstone_public_private_domain_name: '<define_value>.local'
-    cornerstone_vm_os_disk_size: 20
-    cornerstone_vm_data_disk: false
-    cornerstone_vm_data_disk_size: 10
-    cornerstone_vm_data_disk_dev: "vdb"
-    cornerstone_vm_libvirt_vmmem: 2048
-    cornerstone_vm_libvirt_vmcores: 2
+    cornerstone_public_private_domain_name:    #Ex:'obilab.local'
+    cornerstone_vm_os_disk_size:      #Ex:20
+    cornerstone_vm_data_disk:         #Ex:false
+    cornerstone_vm_data_disk_size:    #Ex:10
+    cornerstone_vm_data_disk_dev:     #Ex:"vdb"
+    cornerstone_vm_libvirt_vmmem:     #Ex:2048
+    cornerstone_vm_libvirt_vmcores:   #Ex:2
     cornerstone_vm_ip: "{{ vm_ip }}"
-    cornerstone_tag_purpose: "basicvm"
-    cornerstone_tag_role: "testing"
-    cornerstone_virtual_network_name: default
-    cornerstone_python_interpreter: "/bin/python"
-    cornerstone_vm_extra_nics: 0
-    cornerstone_vm_netname: default 
+    cornerstone_tag_purpose:          #Ex:"basicvm"
+    cornerstone_tag_role:             #Ex:"testing"
+    cornerstone_virtual_network_name: #Ex:default
+    cornerstone_python_interpreter:   #Ex:"/bin/python"
+    cornerstone_vm_extra_nics:        #Ex:0
+    cornerstone_vm_netname:           #Ex:default  
 ```
 
 ## Azure vars file example 
@@ -438,38 +438,38 @@ cornerstone_ssh_user: azureuser
 cornerstone_ssh_key_path: <file_path>
 
 cornerstone_ssh_admin_username: azureadmin
-cornerstone_ssh_admin_pubkey: ssh-rsa .... [redacted]
+cornerstone_ssh_admin_pubkey:               #Ex:ssh-rsa .... [redacted]
 
 vm_state: present
 
 guests:
   basicvm01:
     cornerstone_platform: azure
-    cornerstone_azure_vm_disk_managed: Standard_LRS
-    cornerstone_working_dir: '/tmp/'
+    cornerstone_azure_vm_disk_managed:      #Ex:Standard_LRS
+    cornerstone_working_dir:                #Ex:'/tmp/'
     cornerstone_vm_state: "{{vm_state}}"
-    cornerstone_vm_name: "bastion"
-    cornerstone_storage_type: StandardSSD_LRS
-    cornerstone_location: uksouth
+    cornerstone_vm_name:                    #Ex:"bastion"
+    cornerstone_storage_type:               #Ex:StandardSSD_LRS
+    cornerstone_location:                   #Ex:uksouth
     cornerstone_azure_resource_group: "{{ cornerstone_prefix }}-rg"
     cornerstone_virtual_network_name: "{{ cornerstone_prefix }}-vnet"
     cornerstone_subnet_name: "{{ cornerstone_prefix }}subnet"
     cornerstone_azure_subnet_cidr: "10.1.0.0/20"
-    cornerstone_vm_assign_public_ip: false
+    cornerstone_vm_assign_public_ip:        #Ex:false
     cornerstone_vm_public_ip:
-    cornerstone_public_private_ip: public
-    cornerstone_publicip_allocation_method: Dynamic
-    cornerstone_publicip_domain_name: null
-    cornerstone_vm_flavour: Standard_D2s_v3
-    cornerstone_vm_azure_image: rhel8-gm
-    cornerstone_vm_image_offer: "RHEL"
-    cornerstone_vm_image_publisher: "RedHat"
-    cornerstone_vm_image_sku: "87-gen2"
-    cornerstone_vm_image_version: "latest"
-    cornerstone_vm_os_disk_size: 32
-    cornerstone_vm_data_disk: false
-    cornerstone_tag_purpose: "bastion"
-    cornerstone_tag_role: "testing"
+    cornerstone_public_private_ip:          #Ex:public
+    cornerstone_publicip_allocation_method: #Ex:Dynamic
+    cornerstone_publicip_domain_name:       #Ex:null
+    cornerstone_vm_flavour:                 #Ex:Standard_D2s_v3
+    cornerstone_vm_azure_image:             #Ex:rhel8-gm
+    cornerstone_vm_image_offer:             #Ex:"RHEL"
+    cornerstone_vm_image_publisher:         #Ex:"RedHat"
+    cornerstone_vm_image_sku:               #Ex:"87-gen2"
+    cornerstone_vm_image_version:           #Ex:"latest"
+    cornerstone_vm_os_disk_size:            #Ex:32
+    cornerstone_vm_data_disk:               #Ex:false
+    cornerstone_tag_purpose:                #Ex:"bastion"
+    cornerstone_tag_role:                   #Ex:"testing"
 ```
 
 ## GCP vars file example 
@@ -477,21 +477,21 @@ guests:
 ```yaml
 cornerstone_prefix: cs
 cornerstone_platform: gcp
-cornerstone_ssh_user: <user>
-cornerstone_ssh_key_path: <file_path> ## private key
+cornerstone_ssh_user: ##<user> 
+cornerstone_ssh_key_path: <file_path> ## file_private_to_key
 
-cornerstone_gcp_project: <insert_openenv_id>
-cornerstone_gcp_auth_kind: "serviceaccount"
+cornerstone_gcp_project:             ## Insert openenv id number
+cornerstone_gcp_auth_kind:           #Ex:"serviceaccount"
 cornerstone_service_account_file: "" ## Download service account creds as json
 
 cornerstone_virtual_network_name: "{{ cornerstone_prefix }}-vnet"
-cornerstone_location: europe-west2
-cornerstone_gcp_zone: europe-west2-a
-cornerstone_virtual_network_cidr: 172.16.0.0/28
-cornerstone_gcp_use_serviceaccount: true
+cornerstone_location:               #Ex:europe-west2
+cornerstone_gcp_zone:               #Ex:europe-west2-a
+cornerstone_virtual_network_cidr:   #Ex:172.16.0.0/28
+cornerstone_gcp_use_serviceaccount: #Ex:true
 
-cornerstone_ssh_admin_username: <user>
-cornerstone_ssh_admin_pubkey: <generate pub ssh key and sub in here>
+cornerstone_ssh_admin_username:     # Ex:root user
+cornerstone_ssh_admin_pubkey:       #<generate pub ssh key and sub in here>
 
 ocp4_platform: gcp
 
@@ -507,22 +507,22 @@ vm_state: present
 guests:
   bastion:
     cornerstone_platform: gcp
-    cornerstone_gcp_project: "insert_openenv_id"
+    cornerstone_gcp_project: #Ex: Insert openenv id
     cornerstone_gcp_auth_kind: "serviceaccount"
     cornerstone_service_account_file: ""
-    cornerstone_working_dir: '/tmp/'
+    cornerstone_working_dir:             #Ex:'/tmp/'
     cornerstone_vm_state: "{{vm_state}}"
-    cornerstone_vm_name: "bastion"
-    cornerstone_location: europe-west2
-    cornerstone_gcp_zone: europe-west2-a
+    cornerstone_vm_name:                 #Ex:"bastion"
+    cornerstone_location:                #Ex:europe-west2
+    cornerstone_gcp_zone:                #Ex:europe-west2-a
     cornerstone_virtual_network_name: "{{ cornerstone_prefix }}-vnet"
-    cornerstone_virtual_network_cidr: 172.16.0.0/28
+    cornerstone_virtual_network_cidr:    #Ex:172.16.0.0/28
     cornerstone_subnet_name: "{{ cornerstone_prefix }}subnet"
-    cornerstone_vm_flavour: e2-medium
-    cornerstone_vm_gcp_source_image: "filepath"
-    cornerstone_vm_os_disk_size: 30
-    cornerstone_tag_purpose: "bastion"
-    cornerstone_tag_role: "testing"
+    cornerstone_vm_flavour:              #Ex:e2-medium
+    cornerstone_vm_gcp_source_image:     #Ex:"filepath"
+    cornerstone_vm_os_disk_size:         #Ex:30
+    cornerstone_tag_purpose:             #Ex:"bastion"
+    cornerstone_tag_role:                #Ex:"testing"
 ```
 
 

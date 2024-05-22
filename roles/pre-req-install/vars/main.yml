@@ -4,9 +4,9 @@ aws_system_user:
 aws_profile: default
 aws_access_key: ""
 aws_secret_key: ""
-aws_region: ""
+aws_region: "eu-west-1"
 aws_format: table 
-ssh_key_name: "" # Define ssh key name
+ssh_key_name: "obi" # Define ssh key name
 ssh_role_dir: "/home/oezeakac/.ssh" # Define directory to store ssh key
-foundation: "aws"
+foundation: "libvrt"
 ec2_key_name: "obi.pem"

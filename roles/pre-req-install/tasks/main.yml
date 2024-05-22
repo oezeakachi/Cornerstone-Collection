@@ -1,17 +1,17 @@
 ---
 
 - name: AWS Pre-Req Install
-  ansible.builtin.include_tasks: "aws.yaml"
+  ansible.builtin.include_tasks: "pre-req-install/tasks/aws.yml"
   when: foundation == 'aws'
 
 - name: Azure Pre-Req Install
-  ansible.builtin.include_tasks: "azure.yaml"
+  ansible.builtin.include_tasks: "pre-req-install/tasks/azure.yml"
   when: foundation == 'azure'
 
 - name: Libvrt Pre-Req Install
-  ansible.builtin.include_tasks: "libvrt.yaml"
+  ansible.builtin.include_tasks: "pre-req-install/tasks/libvrt.yml"
   when: foundation == 'libvrt'
 
 - name: GCP AWS Pre-Req Install
-  ansible.builtin.include_tasks: "gcp.yaml"
+  ansible.builtin.include_tasks: "pre-req-install/tasks/gcp.yml"
   when: foundation == 'gcp'

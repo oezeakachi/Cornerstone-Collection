@@ -5,9 +5,18 @@
     - vars/main.yml
 
   tasks:
-    - name: create a new EC2 key pair, returns generated private key
+
+    - name: Create an EC2 key
       amazon.aws.ec2_key:
         name: "{{ ec2_key_name }}"
-        file_name: "{{ ssh_role_dir }}/{{ ec2_key_name }}"
-        #no_log: true
+        region: "{{ aws_region }}"
+        access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
       register: aws_ec2_key_pair
+
+    - name: save private key
+      copy:
+        content: "{{ aws_ec2_key_pair }}" 
+        dest: "{{ ssh_role_dir }}/{{ ec2_key_name }}" 
+        mode: 0600
+      when: aws_ec2_key_pair.changed

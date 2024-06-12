@@ -20,7 +20,7 @@ aws_region:
 aws_format: 
 ssh_key_name: "" # Define ssh key name
 ssh_role_dir: "" # Define directory to store ssh key
-foundation: "" # Defines the which packages will be installed be it aws,libvrt, and azure
+foundation: "" # Defines the which packages will be installed be installed e.g aws,libvrt, or azure
 ec2_key_name: "" # Define ec2 key pair name
 ```
 

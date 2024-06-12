@@ -6,4 +6,4 @@
 
   tasks:
     - include_role:
-        name: /home/oezeakac/labs/Ansible/cornerstone-collection/cornerstone/roles/pre-req-install
+        name: /home/oezeakac/labs/Ansible/Cornerstone-Collection/roles/pre-req-install

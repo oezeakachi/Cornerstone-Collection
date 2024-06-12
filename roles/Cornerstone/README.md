@@ -194,7 +194,7 @@ For AWS deployments the aws_cli is required. Role for this can be found at https
 Example Playbook
 ----------------
 
-# For an AWS deployment this will work for multiple instances.
+## For an AWS deployment this will work for multiple instances.
     - hosts: localhost
       vars:
         cornerstone_sg:
@@ -555,6 +555,6 @@ MIT
 Author Information
 ------------------
 
-Dan Hawker [Github](https://github.com/danhawker)
-Ken Hitchcock - Contributor
-Obi Ezeakachi - Contributor
+| Dan Hawker [Github](https://github.com/danhawker) |
+| Ken Hitchcock - Contributor |
+| Obi Ezeakachi - Contributor |

@@ -8,5 +8,5 @@ aws_region: "eu-west-1"
 aws_format: table 
 ssh_key_name: "obi" # Define ssh key name
 ssh_role_dir: "/home/oezeakac/.ssh" # Define directory to store ssh key
-foundation: "libvrt"
+foundation: "aws"
 ec2_key_name: "obi.pem"

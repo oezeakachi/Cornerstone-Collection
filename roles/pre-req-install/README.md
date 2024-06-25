@@ -14,8 +14,8 @@ Role Variables
 ```yaml
 aws_system_user:
 aws_profile:
-aws_access_key: ""
-aws_secret_key: ""
+aws_access_key: "" #access-key
+aws_secret_key: "" # secret-key
 aws_region: 
 aws_format: 
 ssh_key_name: "" # Define ssh key name

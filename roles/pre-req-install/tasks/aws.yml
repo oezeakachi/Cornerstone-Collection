@@ -11,7 +11,7 @@
 
 - name: save private key
   copy:
-    content: "{{ aws_ec2_key_pair }}" 
+    content: "{{ aws_ec2_key_pair.key.private_key }}" 
     dest: "{{ ssh_role_dir }}/{{ ec2_key_name }}" 
     mode: 0600
   when: aws_ec2_key_pair.changed

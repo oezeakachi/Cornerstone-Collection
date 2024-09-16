@@ -1,0 +1,6 @@
+---
+- name: Generate SSH key pair
+  openssh_keypair:
+    path: "{{ ssh_role_dir }}/{{ ssh_key_name }}"
+    force: true  # rewrites SSH key if already present
+    

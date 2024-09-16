@@ -11,9 +11,9 @@
 
 - name: save private key
   copy:
-    content: "{{ aws_ec2_key_pair.key.private_key }}" 
+    content: "{{ aws_ec2_key_pair.key.private_key }}"
     dest: "{{ ssh_role_dir }}/{{ ec2_key_name }}" 
-    mode: 0600
+    mode: 0400
   when: aws_ec2_key_pair.changed
 
 - name: Install package dependencies
@@ -48,7 +48,6 @@
 
 - name: Configure AWS
   shell: aws configure set {{ item.key }} {{ item.value }} --profile {{ aws_profile }}
-  # no_log: True
   with_dict:
     aws_access_key_id: "{{ aws_access_key }}"
     aws_secret_access_key: "{{ aws_secret_key }}"
@@ -56,3 +55,4 @@
     format: "{{ aws_format }}"
   become_user: "{{ aws_system_user }}"
   changed_when: false
+  no_log: True

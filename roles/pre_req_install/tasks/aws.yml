@@ -1,20 +1,19 @@
 ---
 # AWS CLI Installation
 
-- name: Create an EC2 key
-  amazon.aws.ec2_key:
-    name: "{{ ec2_key_name }}"
-    region: "{{ aws_region }}"
-    access_key: "{{ aws_access_key }}"
-    aws_secret_key: "{{ aws_secret_key }}"
-  register: aws_ec2_key_pair
+- name: Terraform init
+  shell: |
+    terraform init
+  args:
+    chdir: "{{ work_dir }}"
+    executable: /bin/bash
 
-- name: save private key
-  copy:
-    content: "{{ aws_ec2_key_pair.key.private_key }}"
-    dest: "{{ ssh_role_dir }}/{{ ec2_key_name }}" 
-    mode: 0400
-  when: aws_ec2_key_pair.changed
+- name: Terraform init
+  shell: |
+    terraform apply -auto-approve 
+  args:
+    chdir: "{{ work_dir }}"
+    executable: /bin/bash
 
 - name: Install package dependencies
   package:
@@ -56,3 +55,4 @@
   become_user: "{{ aws_system_user }}"
   changed_when: false
   no_log: True
+

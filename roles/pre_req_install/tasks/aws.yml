@@ -1,19 +1,18 @@
 ---
 # AWS CLI Installation
+- name: Generate SSH key
+  ansible.builtin.openssh_keypair:
+    path: "{{ key_file }}"
+    type: rsa
+    size: 2048
+  register: ssh_keypair
 
-- name: Terraform init
-  shell: |
-    terraform init
-  args:
-    chdir: "{{ work_dir }}"
-    executable: /bin/bash
-
-- name: Terraform init
-  shell: |
-    terraform apply -auto-approve 
-  args:
-    chdir: "{{ work_dir }}"
-    executable: /bin/bash
+- name: Create EC2 Key Pair
+  amazon.aws.ec2_key:
+    name: "{{ key_name }}"
+    key_material: "{{ ssh_keypair.public_key }}"
+    region: "{{ aws_region }}"
+  register: ec2_keypair
 
 - name: Install package dependencies
   package:
@@ -54,5 +53,4 @@
     format: "{{ aws_format }}"
   become_user: "{{ aws_system_user }}"
   changed_when: false
-  no_log: True
-
+  no_log: true

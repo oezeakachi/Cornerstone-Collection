@@ -1,9 +1,7 @@
 ## Cornerstone Collection
 -------------------------
 
-This collection leverages the cornerstone and pre-req-install role to provision servers in cloud-base environments
-
-
+This collection leverages the cornerstone and pre-req-install role to provision servers in cloud-based environments. Please look into each role for further information
 
 ## Playbook Ordering
 -------------------
@@ -19,7 +17,7 @@ This collection leverages the cornerstone and pre-req-install role to provision 
 
 - Have a separate directory (e.g. Cornerstone-Playbooks) that contains the needed playbooks 
 - Within this directory it contains another directory called vars, which hosts a vars file called main.yml
-- main.yml contains variables integral to the provisioning process, look down below for the example vars files for each cloud platform
+- main.yml contains variables integral to the provisioning process across the 2 roles. Look down below for the example vars files for each cloud platform
 
 ## Example playbooks
 --------------------
@@ -171,6 +169,7 @@ ssh_role_dir:  # Define directory to store ssh key e.g. ".ssh"
 cornerstone_prefix: cs
 cornerstone_ssh_user: root
 cornerstone_ssh_key_path: # Give a path to ssh key or it will just default to the root user ssh key
+foundation: "libvrt" 
 cornerstone_platform: libvirt
 
 vm_state: present 
@@ -218,7 +217,7 @@ cornerstone_prefix: cs
 cornerstone_platform: azure
 cornerstone_ssh_user: azureuser
 cornerstone_ssh_key_path: <file_path>
-
+foundation: "azure" 
 cornerstone_ssh_admin_username: azureadmin
 cornerstone_ssh_admin_pubkey:               #Ex:ssh-rsa .... [redacted]
 
@@ -261,6 +260,7 @@ ssh_key_name:  # Define ssh key name e.g. "key"
 ssh_role_dir:  # Define directory to store ssh key e.g. ".ssh"
 cornerstone_prefix: cs
 cornerstone_platform: gcp
+foundation: "gcp" 
 cornerstone_ssh_user: ##<user> 
 cornerstone_ssh_key_path: <file_path> ## file_private_to_key
 

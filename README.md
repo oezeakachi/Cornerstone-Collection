@@ -220,7 +220,7 @@ cornerstone_ssh_key_path: <file_path>
 foundation: "azure" 
 cornerstone_ssh_admin_username: azureadmin
 cornerstone_ssh_admin_pubkey:               #Ex:ssh-rsa .... [redacted]
-
+ansible_python_interpreter:         #Ex:/usr/bin/python3
 vm_state: present
 
 guests:
@@ -263,7 +263,7 @@ cornerstone_platform: gcp
 foundation: "gcp" 
 cornerstone_ssh_user: ##<user> 
 cornerstone_ssh_key_path: <file_path> ## file_private_to_key
-
+ansible_python_interpreter:         #Ex:/usr/bin/python3
 cornerstone_gcp_project:             ## Insert openenv id number
 cornerstone_gcp_auth_kind:           #Ex:"serviceaccount"
 cornerstone_service_account_file: "" ## Download service account creds as json

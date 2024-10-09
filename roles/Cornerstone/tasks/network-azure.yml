@@ -11,6 +11,10 @@
 - name: "[Cornerstone - Azure] Create Public IP Address"
   azure_rm_publicipaddress:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     allocation_method: "{{ cornerstone_publicip_allocation_method }}"
     domain_name: "{{ cornerstone_publicip_domain_name }}"
     name: "{{ cornerstone_prefix }}-ip"
@@ -22,6 +26,10 @@
 - name: "[Cornerstone - Azure] Add Subnet"
   azure_rm_subnet:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     name: "{{ cornerstone_subnet_name }}"
     address_prefix: "{{ cornerstone_azure_subnet_cidr }}"
     virtual_network: "{{ cornerstone_virtual_network_name }}"
@@ -29,6 +37,10 @@
 - name: "[Cornerstone - Azure] Create NSG"
   azure_rm_securitygroup:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     location: "{{ cornerstone_location }}"
     name: "{{ cornerstone_prefix }}-nsg"
     rules:
@@ -56,6 +68,10 @@
 - name: "[Cornerstone - Azure] Create Virtual NIC"
   azure_rm_networkinterface:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     location: "{{ cornerstone_location }}"
     name: "{{ cornerstone_prefix }}-nic"
     virtual_network: "{{ cornerstone_virtual_network_name }}"

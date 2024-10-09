@@ -16,6 +16,10 @@
 - name: "[Cornerstone - Azure VM] Discover Public IP Address"
   azure_rm_publicipaddress_info:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     name: "{{ cornerstone_prefix }}-ip"
   register: public_ip
   when:
@@ -35,6 +39,10 @@
 - name: "[Cornerstone - Azure VM] Discover Private IP Address"
   azure_rm_networkinterface_info:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     name: "{{ cornerstone_prefix }}-nic"
   register: nic_data
   when:

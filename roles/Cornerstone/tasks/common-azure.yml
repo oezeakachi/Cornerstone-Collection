@@ -11,11 +11,19 @@
 - name: "[Cornerstone - Azure] Create a resource group"
   azure_rm_resourcegroup:
     name: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     location: "{{ cornerstone_location }}"
 
 - name: "[Cornerstone - Azure] Create virtual network"
   azure_rm_virtualnetwork:
     resource_group: "{{ cornerstone_azure_resource_group }}"
+    subscription_id: "{{ az_subscription_id }}"
+    client_id: "{{ az_client_id }}"
+    secret: "{{ az_secret }}"
+    tenant: "{{ az_tenant }}"
     location: "{{ cornerstone_location }}"
     name: "{{ cornerstone_virtual_network_name }}"
     address_prefixes: "{{ cornerstone_virtual_network_cidr }}"

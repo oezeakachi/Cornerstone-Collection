@@ -16,7 +16,7 @@ This collection leverages the cornerstone and pre-req-install role to provision 
 ```
 
 - Have a separate directory (e.g. Cornerstone-Playbooks) that contains the needed playbooks 
-- Within this directory it contains another directory called vars, which hosts a vars file called main.yml
+- Within this directory it contains another directory called vars, which hosts a global vars file called main.yml
 - main.yml contains variables integral to the provisioning process across the 2 roles. Look down below for the example vars files for each cloud platform
 
 ## Example playbooks
@@ -209,6 +209,7 @@ guests:
 ## Azure vars file example 
 
 For Azure you cannot use the guest layout yet. The task will only create one instance at a time.
+In addition to this to avoid a dependancy mismatch when installing the azure.azcollection use an ee environment: https://github.com/oezeakachi/awx-ee while running the run.yml playbook
 
 ```yaml
 ssh_key_name:  # Define ssh key name e.g. "key"

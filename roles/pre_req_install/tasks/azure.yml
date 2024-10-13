@@ -6,24 +6,3 @@
     path: "{{ ssh_role_dir }}/{{ ssh_key_name }}"
     force: true  # rewrites SSH key if already present
 
-- name: Install Azure collections part 1
-  ansible.builtin.shell: |
-    ansible-galaxy collection install azure.azcollection
-  args:
-    chdir: "/tmp"
-    executable: /bin/bash
-
-
-- name: Install Azure collections part 2
-  ansible.builtin.shell: |
-    pip3 install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
-  args:
-    chdir: "/tmp"
-    executable: /bin/bash
-
-- name: Install Azure collections part 3
-  ansible.builtin.shell: |
-    ansible-galaxy collection install azure.azcollection --force
-  args:
-    chdir: "/tmp"
-    executable: /bin/bash

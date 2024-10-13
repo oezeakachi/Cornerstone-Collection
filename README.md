@@ -222,10 +222,10 @@ foundation: "azure"
 cornerstone_ssh_admin_username: azureadmin
 cornerstone_ssh_admin_pubkey:               #Ex:ssh-rsa .... [redacted]
 ansible_python_interpreter:         #Ex:/usr/bin/python3
-subscription_id: ""
-client_id: ""
-secret: ""
-tenant: ""
+az_subscription_id: ""
+az_client_id: ""
+az_secret: ""
+az_tenant: ""
 vm_state: present
 
 guests:

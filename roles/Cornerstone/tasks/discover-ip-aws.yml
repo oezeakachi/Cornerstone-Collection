@@ -18,8 +18,10 @@
 # Discover Public IP Address of VM
 - name: "[Cornerstone - AWS VM] Discover Public DNS/IP Address"
   amazon.aws.ec2_instance_info:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ cornerstone_location }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     filters:
       "tag:Name": "{{ cornerstone_vm_name }}"
       instance-state-name: [ "running", "shutting-down", "stopping", "stopped" ]

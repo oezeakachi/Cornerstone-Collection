@@ -10,17 +10,21 @@
 # Retrieve AZ Info
 - name: "[Cornerstone - AWS] Retrieve AZ Information"
   amazon.aws.aws_az_info:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ cornerstone_location }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
   register: azs
 
 # Assign IGW to VPC
 - name: "[Cornerstone - AWS] Assign IGW to VPC"
-  ec2_vpc_igw:
+  amazon.aws.ec2_vpc_igw:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     state: present
     region: "{{ cornerstone_location }}"
     vpc_id: "{{ vpc.vpc.id }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     tags:
       Project: "{{ cornerstone_prefix }}"
   register: igw
@@ -37,12 +41,14 @@
 # Assign Subnets to VPC
 - name: "[Cornerstone - AWS] Create and Assign Subnets to VPC per AZ"
   ec2_vpc_subnet:
-    state: present
+    state: present 
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ cornerstone_location }}"
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: "{{ item.1 }}"
     az: "{{ item.0 }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     tags:
       Project: "{{ cornerstone_prefix }}"
       name: "{{ cornerstone_prefix }}-{{ item.0 }}"
@@ -52,21 +58,25 @@
 
 # Update Route Tables for IGW
 - name: "[Cornerstone - AWS] Retrieve VPC Route Table"
-  community.aws.ec2_vpc_route_table_info:
+  amazon.aws.ec2_vpc_route_table_info:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ cornerstone_location }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     filters:
       vpc-id: "{{ vpc.vpc.id }}"
   register: vpc_route_table
 
 - name: "[Cornerstone - AWS] Update VPC Route Table"
-  ec2_vpc_route_table:
+  amazon.aws.ec2_vpc_route_table:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     state: present
     lookup: id
     route_table_id: "{{ vpc_route_table.route_tables[0].id }}"
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ cornerstone_location }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     tags:
       Project: "{{ cornerstone_prefix }}"
       name: "{{ cornerstone_prefix }}-rtb"
@@ -82,11 +92,13 @@
 
 - name: "[Cornerstone - AWS] Create Security Group"
   ec2_group:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     name: "{{ item.name }}"
     description: "{{ item.description }}"
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ item.region }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     state: present
     rules: "{{ item.rules }}"
     tags:

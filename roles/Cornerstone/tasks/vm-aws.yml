@@ -19,8 +19,10 @@
 # Check if we have an existing VM with this name.
 - name: "[Cornerstone - AWS] Check for Existing VM"
   amazon.aws.ec2_instance_info:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ cornerstone_location }}"
-    profile: "{{ cornerstone_aws_profile}}"
+    #profile: "{{ cornerstone_aws_profile}}"
     filters:
       "tag:Name": "{{ cornerstone_vm_name }}"
       "tag:Project": "{{ cornerstone_prefix }}"
@@ -48,8 +50,10 @@
 # Pick a Subnet/AZ
 - name: "[Cornerstone - AWS] Retrieve Available Subnets/AZs to place VM"
   amazon.aws.ec2_vpc_subnet_info:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ cornerstone_location }}"
-    profile: "{{ cornerstone_aws_profile}}"
+    #profile: "{{ cornerstone_aws_profile}}"
     filters:
       vpc-id: "{{ vpc.vpc.id }}"
       "tag:name": "{{ cornerstone_prefix }}-{{ cornerstone_vm_aws_az }}"
@@ -75,7 +79,9 @@
 #    to_cornerstone_template_aws_sg: "{{ cornerstone_sg }}"
 
 - name: "[Cornerstone - AWS] Create/Delete VM - {{ cornerstone_vm_name }}"
-  ec2_instance:
+  amazon.aws.ec2_instance: 
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     name: "{{ cornerstone_vm_name }}"
     state: "{{ cornerstone_vm_state }}"
     instance_ids: "{{ instance_id | default(-99) }}"
@@ -92,7 +98,7 @@
     network:
       assign_public_ip: "{{ cornerstone_vm_assign_public_ip }}" 
       private_ip_address: "{{ cornerstone_vm_private_ip }}"
-    profile: "{{ cornerstone_aws_profile }}"
+    #profile: "{{ cornerstone_aws_profile }}"
     tags:
       Project: "{{ cornerstone_prefix }}"
       Purpose: "{{ cornerstone_tag_purpose }}"
@@ -114,7 +120,9 @@
 
 # Create the VM (baseline with data disk)
 - name: "[Cornerstone - AWS] Create/Delete VM - {{ cornerstone_vm_name }} + Data Disk"
-  ec2_instance:
+  amazon.aws.ec2_instance:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
     name: "{{ cornerstone_vm_name }}"
     state: "{{ cornerstone_vm_state }}"
     instance_ids: "{{ instance_id | default(-99) }}"
@@ -152,16 +160,23 @@
   block:
     - name: "[Cornerstone - AWS] Check for Existing VM"
       amazon.aws.ec2_instance_info:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
         region: "{{ cornerstone_location }}"
-        profile: "{{ cornerstone_aws_profile}}"
+        #profile: "{{ cornerstone_aws_profile}}"
         filters:
           "tag:Name": "{{ cornerstone_vm_name }}"
           "tag:Project": "{{ cornerstone_prefix }}"
           instance-state-name: [ "running", "shutting-down", "stopping", "stopped" ]
       register: createdvm_data
-   
+      retries: 30  # Number of retry attempts
+      delay: 5  # Wait 5 seconds between retries
+      until: createdvm_data.instances | length > 0
+
     - name: "Assign elastic ip"
       amazon.aws.ec2_eip:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
         region: "{{ cornerstone_location }}"
         public_ip: "{{ cornerstone_vm_public_ip }}"
         device_id: "{{ createdvm_data.instances[0].instance_id }}"

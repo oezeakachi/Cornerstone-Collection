@@ -187,29 +187,17 @@ In addition to this to avoid a dependancy mismatch when installing the azure.azc
 
 ```yaml
 ---
-<<<<<<< HEAD
-ssh_key_name:             #Ex: "obi3" # Define ssh key name
-ssh_role_dir:             #Ex: "/home/oezeakac/.ssh" # Define directory to store ssh key
-=======
 ---
 ssh_key_name:             #Ex: "obi3" # Define ssh key name
 ssh_role_dir:             #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks" # Define directory to store ssh key
->>>>>>> b9c0517 (changes to doc)
 foundation:               #Ex: "azure" 
 cornerstone_prefix:       #Ex: cs
 cornerstone_platform:     #Ex: azure
 cornerstone_ssh_user:     #Ex: azureuser
-<<<<<<< HEAD
-cornerstone_ssh_key_path: #Ex:"/home/oezeakac/.ssh/{{ ssh_key_name }}"
-cornerstone_ssh_admin_username: #Ex: azureadmin
-cornerstone_ssh_admin_pubkey:
-ansible_python_interpreter:     #Ex: /usr/bin/python
-=======
 cornerstone_ssh_key_path: #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks/{{ ssh_key_name }}"
 cornerstone_ssh_admin_username: #Ex: azureadmin
 cornerstone_ssh_admin_pubkey:   #<generate pub ssh key and sub in here when running run.yml>
 ansible_python_interpreter:     #Ex: /usr/bin/python3.11
->>>>>>> b9c0517 (changes to doc)
 az_subscription_id:             # Subscription ID
 az_client_id:                   # Client ID
 az_secret:                      # Secret
@@ -245,26 +233,23 @@ guests:
     cornerstone_vm_data_disk:               #Ex: false
     cornerstone_tag_purpose:                #Ex: "bastion"
     cornerstone_tag_role:                   #Ex: "testing"
-<<<<<<< HEAD
-=======
 
->>>>>>> b9c0517 (changes to doc)
 ```
 
 ## GCP vars file example 
 
 ```yaml
 ssh_key_name:           #Ex: "obi4" # Define ssh key name
-ssh_role_dir:           #Ex: "/home/oezeakac/.ssh" # Define directory to store ssh key
+ssh_role_dir:           #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks" # Define directory to store ssh key
 cornerstone_prefix:     #Ex: cs
 cornerstone_platform:   #Ex: gcp
 foundation:             #Ex: "gcp" 
 cornerstone_ssh_user:   #Ex: obi 
-cornerstone_ssh_key_path:   #Ex: /home/oezeakac/.ssh" ## file_private_to_key
-ansible_python_interpreter: #Ex: /usr/bin/python3
+cornerstone_ssh_key_path:   #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks/{{ ssh_key_name }}" ## file_private_to_key
+ansible_python_interpreter: #Ex: /usr/bin/python3.11
 cornerstone_gcp_project:    #Ex: openenv-d2p2t
 cornerstone_gcp_auth_kind:  #Ex: "serviceaccount"
-cornerstone_service_account_file: #Ex: /home/oezeakac/openenv-prbtd-6d274028b755.json
+cornerstone_service_account_file: #Ex: /home/oezeakac/labs/Ansible/cornerstone-playbooks/openenv-prbtd-6d274028b755.json - This is the private key
 
 cornerstone_virtual_network_name:  #Ex: "{{ cornerstone_prefix }}-vnet"
 cornerstone_location:              #Ex: europe-west2
@@ -273,7 +258,7 @@ cornerstone_virtual_network_cidr:  #Ex: 172.16.0.0/28
 cornerstone_gcp_use_serviceaccount: true
 
 cornerstone_ssh_admin_username: root user
-cornerstone_ssh_admin_pubkey:       #<generate pub ssh key and sub in here>
+cornerstone_ssh_admin_pubkey:       #<generate pub ssh key and sub in here when running run.yml>
 
 ocp4_platform: gcp
 
@@ -291,7 +276,7 @@ guests:
     cornerstone_platform:               #Ex: gcp
     cornerstone_gcp_project:            #Ex: openenv-d2p2t
     cornerstone_gcp_auth_kind:          #Ex: "serviceaccount"
-    cornerstone_service_account_file: ""
+    cornerstone_service_account_file: "" #Ex:/home/oezeakac/labs/Ansible/cornerstone-playbooks/openenv-prbtd-6d274028b755.json 
     cornerstone_working_dir:            #Ex:'/tmp/'
     cornerstone_vm_state:               #Ex:"{{vm_state}}"
     cornerstone_vm_name:                #Ex: "bastion"
@@ -301,7 +286,7 @@ guests:
     cornerstone_virtual_network_cidr:   #Ex: 172.16.0.0/28
     cornerstone_subnet_name:            #Ex: "{{ cornerstone_prefix }}subnet"
     cornerstone_vm_flavour:             #Ex: e2-medium
-    cornerstone_vm_gcp_source_image:    #Ex:"filepath"
+    cornerstone_vm_gcp_source_image:    #Ex:"projects/rhel-cloud/global/images/rhel-8-v20230411"
     cornerstone_vm_os_disk_size:        #Ex: 30
     cornerstone_tag_purpose:            #Ex: "bastion"
     cornerstone_tag_role:               #Ex: "testing"

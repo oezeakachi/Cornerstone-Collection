@@ -187,16 +187,29 @@ In addition to this to avoid a dependancy mismatch when installing the azure.azc
 
 ```yaml
 ---
+<<<<<<< HEAD
 ssh_key_name:             #Ex: "obi3" # Define ssh key name
 ssh_role_dir:             #Ex: "/home/oezeakac/.ssh" # Define directory to store ssh key
+=======
+---
+ssh_key_name:             #Ex: "obi3" # Define ssh key name
+ssh_role_dir:             #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks" # Define directory to store ssh key
+>>>>>>> b9c0517 (changes to doc)
 foundation:               #Ex: "azure" 
 cornerstone_prefix:       #Ex: cs
 cornerstone_platform:     #Ex: azure
 cornerstone_ssh_user:     #Ex: azureuser
+<<<<<<< HEAD
 cornerstone_ssh_key_path: #Ex:"/home/oezeakac/.ssh/{{ ssh_key_name }}"
 cornerstone_ssh_admin_username: #Ex: azureadmin
 cornerstone_ssh_admin_pubkey:
 ansible_python_interpreter:     #Ex: /usr/bin/python
+=======
+cornerstone_ssh_key_path: #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks/{{ ssh_key_name }}"
+cornerstone_ssh_admin_username: #Ex: azureadmin
+cornerstone_ssh_admin_pubkey:   #<generate pub ssh key and sub in here when running run.yml>
+ansible_python_interpreter:     #Ex: /usr/bin/python3.11
+>>>>>>> b9c0517 (changes to doc)
 az_subscription_id:             # Subscription ID
 az_client_id:                   # Client ID
 az_secret:                      # Secret
@@ -232,6 +245,10 @@ guests:
     cornerstone_vm_data_disk:               #Ex: false
     cornerstone_tag_purpose:                #Ex: "bastion"
     cornerstone_tag_role:                   #Ex: "testing"
+<<<<<<< HEAD
+=======
+
+>>>>>>> b9c0517 (changes to doc)
 ```
 
 ## GCP vars file example 

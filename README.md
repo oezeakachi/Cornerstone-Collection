@@ -55,6 +55,8 @@ This collection leverages the cornerstone and pre-req-install role to provision 
 
 ## AWS vars file example
 
+![](images/aws.png)
+
 ```yaml
 ---
 aws_system_user:
@@ -183,10 +185,10 @@ guests:
 ## Azure vars file example 
 
 For Azure you cannot use the guest layout yet. The task will only create one instance at a time.
-In addition to this to avoid a dependancy mismatch when installing the azure.azcollection use an ee environment: https://github.com/oezeakachi/Cornerstone-EE/blob/main  while running the run.yml playbook
+
+![](images/azure.png)
 
 ```yaml
----
 ---
 ssh_key_name:             #Ex: "obi3" # Define ssh key name
 ssh_role_dir:             #Ex: "/home/oezeakac/labs/Ansible/cornerstone-playbooks" # Define directory to store ssh key
@@ -237,6 +239,9 @@ guests:
 ```
 
 ## GCP vars file example 
+
+![](images/gcp-bastion.png)
+
 
 ```yaml
 ssh_key_name:           #Ex: "obi4" # Define ssh key name
